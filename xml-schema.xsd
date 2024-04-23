@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:complexType name="CD_TYPE">
+        <xsd:sequence>
+            <xsd:element name="STATE" type="xsd:string"/>
+            <xsd:element name="OCCUPIED" type="xsd:boolean"/>
+        </xsd:sequence>
+        <xsd:attribute name="ID" type="xsd:ID"/>
+    </xsd:complexType>
+    <xsd:complexType name="ALBUM_TYPE">
+        <xsd:sequence>
+            <xsd:element name="NAME" type="xsd:string"/>
+            <xsd:element name="RELEASE_YEAR" type="xsd:int"/>
+            <xsd:element name="PRICE" type="xsd:float"/>
+            <xsd:element name="CD" type="CD_TYPE" minOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+
+    <xsd:complexType name="ARTIST_TYPE">
+        <xsd:sequence>
+            <xsd:element name="NAME" type="xsd:string"/>
+            <xsd:element name="COUNTRY" type="xsd:string"/>
+            <xsd:element name="GENRE" type="xsd:string"/>
+            <xsd:element name="ALBUM" type="ALBUM_TYPE" minOccurs="1"/>
+            <xsd:choice minOccurs="1" maxOccurs="1">
+                <xsd:element name="DJ">
+                    <xsd:complexType>
+                            <xsd:element name="YEAR_STARTED_PERFORMING" type="xsd:string"/>
+                            <xsd:element name="NET_WORTH" type="xsd:int"/>
+                            <xsd:element name="YEAR_OF_BIRTH" type="xsd:string"/>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="GROUP">
+                    <xsd:complexType>
+                            <xsd:element name="YEAR_FORMED" type="xsd:string"/>
+                            <xsd:element name="NUMBER_OF_MEMBERS" type="xsd:int"/>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="SINGER">
+                    <xsd:complexType>
+                        <xsd:element name="YEAR_STARTED_PERFORMING" type="xsd:string"/>
+                        <xsd:element name="YEAR_OF_BIRTH" type="xsd:string"/>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:choice>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:simpleType name="EmailType">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="^([\w\d]{2,})@([\w\d]{2,})\.[a-zA-Z]{2,}$"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="TelephoneType">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="^75[0-9]-[1-9][0-9]{3}$"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:complexType name="CLIENT_TYPE">
+        <xsd:sequence>
+             <xsd:element name="NAME" type="xsd:string"/>
+             <xsd:element name="MIDDLE_NAME" type="xsd:string" minOccurs="0"/>
+             <xsd:element name="SURNAME" type="xsd:string"/>
+             <xsd:element name="ADDRESS" minOccurs="0" maxOccurs="1">
+                 <xsd:complexType>
+                     <xsd:choice>
+                         <xsd:sequence>
+                             <xsd:element name="STREET" type="xsd:string"/>
+                             <xsd:element name="NUMBER" type="xsd:int"/>
+                         </xsd:sequence>
+                         <xsd:sequence>
+                             <xsd:element name="STREET">
+                                 <xsd:simpleType>
+                                     <xsd:restriction base="xsd:string">
+                                         <xsd:pattern value="^[a-zA-Z]{1,}St\.[0-9]{1,2}$"/>
+                                     </xsd:restriction>
+                                 </xsd:simpleType>
+                             </xsd:element>
+                         </xsd:sequence>
+                     </xsd:choice>
+                 </xsd:complexType>
+             </xsd:element>
+            <xsd:element name="EMAIL" type="EmailType"/>
+            <xsd:element name="TELEPHONE" type="TelephoneType"/>
+            <xsd:element name="RENT">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="FROM_DATE" type="xsd:dateTime"/>
+                        <xsd:element name="RETURN_DATE" type="xsd:dateTime"/>
+                        <xsd:element name="RETURN_STATE">
+                            <xsd:choice>
+                                <xsd:simpleType>
+                                    <xsd:restriction base="xsd:int">
+                                        <xsd:enumeration value="0"/>
+                                        <xsd:enumeration value="1"/>
+                                        <xsd:enumeration value="2"/>
+                                    </xsd:restriction>
+                                </xsd:simpleType>
+                                <xsd:simpleType>
+                                    <xsd:restriction base="xsd:string">
+                                        <xsd:enumeration value="functional"/>
+                                        <xsd:enumeration value="slightly damaged"/>
+                                        <xsd:enumeration value="damaged"/>
+                                    </xsd:restriction>
+                                </xsd:simpleType>
+                            </xsd:choice>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="SYSTEM">
+        <xsd:complexType>
+            <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                <xsd:element name="ARTIST" type="ARTIST_TYPE"/>
+                <xsd:element name="CLIENT" type="CLIENT_TYPE"/>
+            </xsd:choice>
+        </xsd:complexType>
+    </xsd:element>
+    
+</xsd:schema>
